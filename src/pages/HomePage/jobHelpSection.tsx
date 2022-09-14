@@ -66,15 +66,14 @@ const JobHelpSection = () => {
       </Paper>
       <Collapse in={isHelpInfoVisible}>
         <Grid
-          container
-          justifyContent="center"
           sx={{
-            alignItems: "center",
             backgroundColor: "secondary.light",
             position: "relative",
             minHeight: "315px",
             padding: "40px",
             overflow: "hidden",
+            alignItems: "flex-start",
+            justifyContent: "center",
 
             "::before": {
               content: "''",
@@ -91,7 +90,10 @@ const JobHelpSection = () => {
             <Grid
               item
               xs={4}
-              sx={{ display: "flex", justifyContent: "center" }}
+              sx={{
+                display: "flex",
+                justifyContent: "space-between",
+              }}
             >
               <JobHelpItem
                 title={s.title}
