@@ -26,13 +26,30 @@ const MainSection = () => {
             textAlign: "center",
             textTransform: "uppercase",
             marginBottom: "30px",
+            fontSize: {
+              xl: "6rem",
+              lg: "6rem",
+              md: "4rem",
+              sm: "3rem",
+              xs: "3rem",
+            },
           }}
         >
           Онлайн академія <Box sx={{ color: "primary.main" }}>іт професій</Box>
         </Typography>
         <Typography
           variant="h4"
-          sx={{ fontWeigth: "bold", textTransform: "uppercase" }}
+          sx={{
+            fontWeigth: "bold",
+            textTransform: "uppercase",
+            fontSize: {
+              xl: "3rem",
+              lg: "2rem",
+              md: "2rem",
+              sm: "1.7rem",
+              xs: "1.2rem",
+            },
+          }}
         >
           Твій шлях в{" "}
           <Typewriter

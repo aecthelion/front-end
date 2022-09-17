@@ -1,5 +1,4 @@
-import { Box, Button } from "@mui/material";
-import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
+import { Box } from "@mui/material";
 import MainButton from "../mainButton";
 
 interface ICourse {
@@ -14,25 +13,64 @@ const Course = ({ courseTitle, courseStack }: ICourse) => {
         display: "flex",
         gap: "40px",
         alignItems: "end",
+        minWidth: {
+          xl: "700px",
+          lg: "600px",
+          md: "450px",
+          sm: "450px",
+          xs: "280px",
+        },
+        width: "100%",
+        flexWrap: {
+          xl: "nowrap",
+          lg: "nowrap",
+          md: "nowrap",
+          sm: "wrap",
+          xs: "wrap",
+        },
       }}
     >
-      <Box
-        sx={{
-          width: "300px",
-        }}
-      >
+      <Box>
         <Box
           sx={{
-            fontSize: "2rem",
+            fontSize: {
+              xl: "2.5rem",
+              lg: "2rem",
+              md: "2rem",
+              sm: "1.2rem",
+              xs: "1rem",
+            },
             fontWeight: "bold",
             marginBottom: "10px",
           }}
         >
           {courseTitle}
         </Box>
-        <Box>{courseStack}</Box>
+        <Box
+          sx={{
+            fontSize: {
+              xl: "1rem",
+              lg: "1rem",
+              md: "1rem",
+              sm: "1rem",
+              xs: "0.8rem",
+            },
+            maxWidth: {
+              xl: "360px",
+              lg: "360px",
+              md: "360px",
+              sm: "320px",
+              xs: "320px",
+            },
+          }}
+        >
+          {courseStack}
+        </Box>
       </Box>
-      <MainButton text="Детальніше" adornment={null} onClick={() => null} />
+
+      <Box sx={{ marginLeft: "auto" }}>
+        <MainButton text="Детальніше" adornment={null} onClick={() => null} />
+      </Box>
     </Box>
   );
 };

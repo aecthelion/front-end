@@ -8,7 +8,7 @@ const SalarySection = () => {
   return (
     <FadeIn type="default">
       <SectionContainer sideTitle="Що вас очікує">
-        <Grid item xs={11} sx={{}}>
+        <Box>
           <Box marginBottom={"20px"}>
             <SectionTitle
               title="У ПЕРШІ 2 РОКИ ПРАЦІ"
@@ -16,35 +16,24 @@ const SalarySection = () => {
               type="reverse"
             />
           </Box>
-        </Grid>
-        <Grid item xs={11} sx={{}}>
-          <Grid
-            container
-            sx={{ alignItems: "flex-end", justifyContent: "center" }}
+
+          <Box
+            sx={{
+              display: "flex",
+              width: "100%",
+              alignItems: "flex-end",
+              justifyContent: "center",
+
+              gap: "0px",
+            }}
           >
-            <Grid
-              item
-              xs={4}
-              sx={{ display: "flex", justifyContent: "center" }}
-            >
-              <SalaryGrow salary="700" />
-            </Grid>
-            <Grid
-              item
-              xs={4}
-              sx={{ display: "flex", justifyContent: "center" }}
-            >
-              <SalaryGrow salary="1300" />
-            </Grid>
-            <Grid
-              item
-              xs={4}
-              sx={{ display: "flex", justifyContent: "center" }}
-            >
-              <SalaryGrow salary="1700" />
-            </Grid>
-          </Grid>
-        </Grid>
+            <SalaryGrow salary="700" />
+
+            <SalaryGrow salary="1300" />
+
+            <SalaryGrow salary="1700" />
+          </Box>
+        </Box>
       </SectionContainer>
     </FadeIn>
   );

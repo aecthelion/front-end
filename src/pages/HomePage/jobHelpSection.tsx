@@ -4,6 +4,7 @@ import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import React from "react";
 import MainButton from "../../components/ui/mainButton";
 import JobHelpItem from "../../components/ui/jobHelpItem";
+import SectionTitle from "./../../components/ui/sectionTitle/index";
 
 const JobHelpSection = () => {
   const [isHelpInfoVisible, setIsHelpInfoVisible] = React.useState(false);
@@ -39,33 +40,45 @@ const JobHelpSection = () => {
           justifyContent: "space-between",
           backgroundColor: "primary.main",
           height: "144px",
-          padding: "50px",
+          padding: {
+            xl: "50px",
+            lg: "50px",
+            md: "30px",
+            sm: "20px",
+            xs: "20px",
+          },
           borderRadius: "8px",
+          flexWrap: {
+            xl: "nowrap",
+            lg: "nowrap",
+            md: "nowrap",
+            sm: "wrap",
+            xs: "wrap",
+          },
         }}
       >
+        <SectionTitle title="Допомога з працевлаштуванням" mainColor="light" />
+
         <Box
           sx={{
-            fontSize: "2rem",
-            textTransform: "upperCase",
-            color: "primary.light",
+            marginLeft: "auto",
           }}
         >
-          Допомога з працевлаштуванням
+          <MainButton
+            text={isHelpInfoVisible ? "Приховати" : "Показати"}
+            adornment={
+              isHelpInfoVisible ? (
+                <KeyboardArrowUpIcon />
+              ) : (
+                <KeyboardArrowDownIcon />
+              )
+            }
+            onClick={handleInfoClick}
+          />
         </Box>
-        <MainButton
-          text={isHelpInfoVisible ? "Приховати" : "Показати"}
-          adornment={
-            isHelpInfoVisible ? (
-              <KeyboardArrowUpIcon />
-            ) : (
-              <KeyboardArrowDownIcon />
-            )
-          }
-          onClick={handleInfoClick}
-        />
       </Paper>
       <Collapse in={isHelpInfoVisible}>
-        <Grid
+        <Box
           sx={{
             backgroundColor: "secondary.light",
             position: "relative",
@@ -87,9 +100,7 @@ const JobHelpSection = () => {
           }}
         >
           {jobSectionText.map((s, i) => (
-            <Grid
-              item
-              xs={4}
+            <Box
               sx={{
                 display: "flex",
                 justifyContent: "space-between",
@@ -101,9 +112,9 @@ const JobHelpSection = () => {
                 iconType={s.iconType}
                 key={i}
               />
-            </Grid>
+            </Box>
           ))}
-        </Grid>
+        </Box>
       </Collapse>
     </section>
   );

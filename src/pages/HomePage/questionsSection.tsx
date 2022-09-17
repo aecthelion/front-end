@@ -48,16 +48,14 @@ const QuestionsSection = () => {
   return (
     <FadeIn type="default">
       <SectionContainer sideTitle="Основне, що цікавить">
-        <Grid item xs={11}>
-          <Grid item xs={11}>
+        <Box sx={{ width: "100%" }}>
+          <Box>
             <Box sx={{ marginBottom: "30px" }}>
-              <SectionTitle title="Питання /" spanText=" Відповіді" type="" />
+              <SectionTitle title="Питання /" spanText=" Відповіді" />
             </Box>
-          </Grid>
-          <Grid item xs={11}>
-            {renderQuestions()}
-          </Grid>
-        </Grid>
+          </Box>
+          <Box>{renderQuestions()}</Box>
+        </Box>
       </SectionContainer>
     </FadeIn>
   );

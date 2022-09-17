@@ -18,6 +18,8 @@ const SectionSideTitle = ({ title }: ISectionSideTitle) => {
         position: "absolute",
         top: "40px",
         color: COLORS.main,
+        height: "230px",
+        textAlign: "end",
       }}
     >
       {title}

@@ -19,7 +19,18 @@ const SalaryGrow = ({ salary }: ISalaryGrow) => {
   }, [inView]);
 
   return (
-    <Box sx={{ maxWidth: "380px" }} ref={ref}>
+    <Box
+      sx={{
+        width: {
+          xl: "350px",
+          lg: "350px",
+          md: "200px",
+          sm: "120px",
+          xs: "100px",
+        },
+      }}
+      ref={ref}
+    >
       <AnimatedCounter from={0} to={Number(salary)} InView={inView} />
       <AnimateHeight id="example-panel" duration={4000} height={height}>
         <Box
@@ -37,10 +48,17 @@ const SalaryGrow = ({ salary }: ISalaryGrow) => {
       </AnimateHeight>
       <Box
         sx={{
-          fontSize: "1.3rem",
+          fontSize: {
+            xl: "1.5rem",
+            lg: "1.2rem",
+            md: "1rem",
+            sm: "1rem",
+            xs: "0.8rem",
+          },
           textAlign: "center",
 
           opacity: 0.5,
+          height: "30px",
         }}
       >
         {salary === "700"

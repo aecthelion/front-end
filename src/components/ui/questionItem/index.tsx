@@ -21,7 +21,11 @@ const QuestionItem = ({ questionTitle, questionText }: IQuestionItem) => {
   };
 
   return (
-    <>
+    <Box
+      sx={{
+        width: "100%",
+      }}
+    >
       <Divider />
       <Box sx={{ padding: "20px 0" }}>
         <Box
@@ -30,6 +34,7 @@ const QuestionItem = ({ questionTitle, questionText }: IQuestionItem) => {
             cursor: "pointer",
             display: "flex",
             justifyContent: "space-between",
+            alignItems: "center",
           }}
         >
           <SectionSubTitle title={questionTitle} />
@@ -49,6 +54,13 @@ const QuestionItem = ({ questionTitle, questionText }: IQuestionItem) => {
               lineHeight: "15px",
               whiteSpace: "pre-line",
               marginTop: "20px",
+              fontSize: {
+                xl: "1rem",
+                lg: "1rem",
+                md: "1rem",
+                sm: "0.9rem",
+                xs: "0.8rem",
+              },
             }}
           >
             {questionText}
@@ -56,7 +68,7 @@ const QuestionItem = ({ questionTitle, questionText }: IQuestionItem) => {
         </Collapse>
       </Box>
       <Divider />
-    </>
+    </Box>
   );
 };
 

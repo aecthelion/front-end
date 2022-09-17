@@ -1,4 +1,4 @@
-import { Grid } from "@mui/material";
+import { Grid, Box } from "@mui/material";
 import SectionSideTitle from "../ui/sectionSideTitle";
 
 interface ISectionContainer {
@@ -9,17 +9,20 @@ interface ISectionContainer {
 const SectionContainer = ({ sideTitle, children }: ISectionContainer) => {
   return (
     <section>
-      <Grid
-        container
-        spacing={4}
-        sx={{ margin: "50px 0", position: "relative" }}
+      <Box
+        sx={{
+          margin: "50px 0",
+          position: "relative",
+
+          paddingLeft: "30px",
+        }}
       >
-        <Grid item xs={1}>
+        <Box sx={{ position: "absolute", left: "-20px" }}>
           <SectionSideTitle title={sideTitle} />
-        </Grid>
+        </Box>
 
         {children}
-      </Grid>
+      </Box>
     </section>
   );
 };
