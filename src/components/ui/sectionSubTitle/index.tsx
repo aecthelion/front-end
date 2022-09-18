@@ -11,10 +11,10 @@ const SectionSubTitle = ({ title }: ISectionSubTitle) => {
         fontWeight: "700",
         fontSize: {
           xl: "1.4rem",
-          lg: "1.3rem",
-          md: "1.2rem",
-          sm: "1.1rem",
-          sx: "1.1rem",
+          lg: "1.2rem",
+          md: "1.1rem",
+          sm: "1rem",
+          sx: "1rem",
         },
         opacity: 0.7,
       }}

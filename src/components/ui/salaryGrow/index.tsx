@@ -21,12 +21,12 @@ const SalaryGrow = ({ salary }: ISalaryGrow) => {
   return (
     <Box
       sx={{
-        width: {
+        maxWidth: {
           xl: "350px",
           lg: "350px",
           md: "200px",
           sm: "120px",
-          xs: "100px",
+          xs: "85px",
         },
       }}
       ref={ref}

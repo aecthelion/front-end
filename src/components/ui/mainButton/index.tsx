@@ -29,6 +29,9 @@ const MainButton = ({ text, adornment, onClick }: IMainButton) => {
           sm: "0.7rem",
           xs: "0.7rem",
         },
+        "&:hover": {
+          backgroundColor: "primary.dark",
+        },
       }}
     >
       {text}

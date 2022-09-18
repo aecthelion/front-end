@@ -1,4 +1,4 @@
-import { Box, Button, Container, Grid } from "@mui/material";
+import { Box, Button, Container } from "@mui/material";
 import FooterBtn from "../../components/ui/footerBtn";
 import LoginIcon from "@mui/icons-material/Login";
 import Logo from "../../components/ui/logo";
@@ -7,7 +7,7 @@ const Footer = () => {
   return (
     <footer>
       <Box
-        sx={{ width: "100%", height: "400px", backgroundColor: "primary.dark" }}
+        sx={{ width: "100%", height: "200px", backgroundColor: "primary.dark" }}
       >
         <Container
           maxWidth="xl"
@@ -75,14 +75,24 @@ const Footer = () => {
                   lg: "1.1rem",
                   md: "0.9rem",
                   sm: "0.9rem",
-                  xs: "0.8rem",
+                  xs: "0.7rem",
                 },
                 "&:hover": {
                   color: "primary.main",
                 },
               }}
             >
-              <LoginIcon fontSize="large" />
+              <LoginIcon
+                sx={{
+                  fontSize: {
+                    xl: "2rem",
+                    lg: "2rem",
+                    md: "2rem",
+                    sm: "2rem",
+                    xs: "1rem",
+                  },
+                }}
+              />
               Login
             </Button>
           </Box>

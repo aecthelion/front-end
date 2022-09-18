@@ -18,7 +18,7 @@ const Course = ({ courseTitle, courseStack }: ICourse) => {
           lg: "600px",
           md: "450px",
           sm: "450px",
-          xs: "280px",
+          xs: "260px",
         },
         width: "100%",
         flexWrap: {
@@ -60,7 +60,7 @@ const Course = ({ courseTitle, courseStack }: ICourse) => {
               lg: "360px",
               md: "360px",
               sm: "320px",
-              xs: "320px",
+              xs: "290px",
             },
           }}
         >

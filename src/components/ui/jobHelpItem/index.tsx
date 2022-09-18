@@ -20,25 +20,59 @@ const JobHelpItem = ({ title, infoText, iconType }: IJobHelpItem) => {
     } else return <HelpIcon />;
   };
   return (
-    <Box>
+    <Box
+      sx={{
+        maxWidth: {
+          xl: "400px",
+          lg: "400px",
+          md: "100%",
+          sm: "100%",
+          xs: "100%",
+        },
+      }}
+    >
       <Box
         sx={{
           display: "flex",
           alignItems: "center",
           backgroundColor: "primary.main",
           color: "primary.light",
-          width: "fit-content",
           padding: "5px",
           borderRadius: "8px",
-          marginBottom: "10px",
+          width: "fit-content",
         }}
       >
         {renderIcon()}
       </Box>
-      <SectionSubTitle title={title} />
       <Box
         sx={{
-          fontSize: "1rem",
+          height: {
+            xl: "50px",
+            lg: "50px",
+            md: "20px",
+            sm: "20px",
+            xs: "fit-content",
+          },
+          marginBottom: {
+            xl: "25px",
+            lg: "25px",
+            md: "15px",
+            sm: "10px",
+            xs: "10px",
+          },
+        }}
+      >
+        <SectionSubTitle title={title} />
+      </Box>
+      <Box
+        sx={{
+          fontSize: {
+            xl: "1rem",
+            lg: "1rem",
+            md: "0.9rem",
+            sm: "0.8rem",
+            xs: "0.8rem",
+          },
           opacity: 0.7,
           lineHeight: "25px",
           marginTop: "15px",

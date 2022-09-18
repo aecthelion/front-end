@@ -19,11 +19,18 @@ const FooterBtn = ({ text, size = "normal" }: IFooterBtn) => {
           lg: "1.1rem",
           md: "0.9rem",
           sm: "0.9rem",
-          xs: "0.8rem",
+          xs: "0.7rem",
         },
         "&:hover": {
           backgroundColor: "primary.main",
           color: "primary.light",
+        },
+        minWidth: {
+          xl: "99px",
+          lg: "99px",
+          md: "99px",
+          sm: "99px",
+          xs: "80px",
         },
       }}
     >

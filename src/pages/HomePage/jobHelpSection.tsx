@@ -1,4 +1,4 @@
-import { Paper, Collapse, Box, Grid } from "@mui/material";
+import { Paper, Collapse, Box } from "@mui/material";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import React from "react";
@@ -87,6 +87,15 @@ const JobHelpSection = () => {
             overflow: "hidden",
             alignItems: "flex-start",
             justifyContent: "center",
+            display: "flex",
+            gap: "40px",
+            flexDirection: {
+              xl: "row",
+              lg: "row",
+              md: "column",
+              sm: "column",
+              xs: "column",
+            },
 
             "::before": {
               content: "''",
@@ -100,19 +109,12 @@ const JobHelpSection = () => {
           }}
         >
           {jobSectionText.map((s, i) => (
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "space-between",
-              }}
-            >
-              <JobHelpItem
-                title={s.title}
-                infoText={s.infoText}
-                iconType={s.iconType}
-                key={i}
-              />
-            </Box>
+            <JobHelpItem
+              title={s.title}
+              infoText={s.infoText}
+              iconType={s.iconType}
+              key={i}
+            />
           ))}
         </Box>
       </Collapse>

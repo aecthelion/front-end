@@ -1,4 +1,4 @@
-import { Box, Button, Grid } from "@mui/material";
+import { Box, Button } from "@mui/material";
 import React from "react";
 
 import Logo from "../../components/ui/logo";
@@ -17,22 +17,15 @@ const Header: React.FC = () => {
     >
       <Logo type="dark" />
 
-      <Grid container spacing={2} sx={{ width: 140 }}>
-        <Grid item xs={6}>
-          <Button sx={{ color: "primary.dark", width: 64 }}>
-            <SearchIcon fontSize="large" />
-          </Button>
-        </Grid>
+      <Box sx={{ width: 140, display: "flex", alignItems: "center" }}>
+        <Button sx={{ color: "primary.dark" }}>
+          <SearchIcon fontSize="large" />
+        </Button>
 
-        <Grid item xs={6}>
-          <Button>
-            <MenuIcon
-              fontSize="large"
-              sx={{ color: "primary.dark", width: 64 }}
-            />
-          </Button>
-        </Grid>
-      </Grid>
+        <Button>
+          <MenuIcon fontSize="large" sx={{ color: "primary.dark" }} />
+        </Button>
+      </Box>
     </Box>
   );
 };

@@ -2,7 +2,6 @@ import { Box } from "@mui/material";
 import PercentIcon from "@mui/icons-material/Percent";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
-import LanguageIcon from "@mui/icons-material/Language";
 import PlayCircleOutlineIcon from "@mui/icons-material/PlayCircleOutline";
 
 interface ISectionText {
@@ -18,7 +17,7 @@ const SectionText = ({ text, type = "default" }: ISectionText) => {
         gap: "7px",
         alignItems: "center",
         justifyContent: "flex-start",
-        width: "350px",
+        maxWidth: "350px",
         marginBottom: "10px",
       }}
     >
