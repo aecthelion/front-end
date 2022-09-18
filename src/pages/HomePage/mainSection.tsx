@@ -9,6 +9,7 @@ const MainSection = () => {
       <Box
         sx={{
           height: "40vh",
+          minHeight: "353px",
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
