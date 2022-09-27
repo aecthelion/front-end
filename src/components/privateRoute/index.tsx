@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
 import { Navigate, Outlet } from "react-router-dom";
-import {IUser} from "../../features/auth/authSlice";
+import {IUser} from "../../models/IUser";
 
 interface IPrivateRouteProps {
   user?: IUser

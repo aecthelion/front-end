@@ -2,12 +2,11 @@ import React, { createRef, useEffect, useState } from "react";
 import { Formik, FormikHelpers } from "formik";
 import validationSchema from "./validationSchema";
 import { SignInFormComponent } from "./signinFormComponents";
-import { login, reset } from "../../features/auth/authSlice";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch } from "../../store/store";
 import { useNavigate } from "react-router-dom";
 import { Box, Container } from "@mui/material";
 import AuthSideTitle from "../ui/authSideTitle";
+import {useAppDispatch, useAppSelector} from "../../hooks/redutx";
+import {loginUser} from "../../store/reducers/auth/actionCreators";
 
 export interface ISignInForm {
   password: string;
@@ -36,11 +35,12 @@ const formStatusProps: IFormStatusProps = {
 
 const SignInForm: React.FunctionComponent = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useAppDispatch()
   const formikRef: any = createRef();
-  const { user, isLoading, isError, isSuccess, message } = useSelector(
-    (state: any) => state.auth
+  const { user, isLoading, error} = useAppSelector(
+    state => state.authReducer
   );
+  console.log(error, user,)
   const [displayFormStatus, setDisplayFormStatus] = useState(false);
   const [formStatus, setFormStatus] = useState<IFormStatus>({
     message: "",
@@ -52,17 +52,16 @@ const SignInForm: React.FunctionComponent = () => {
     actions: FormikHelpers<ISignInForm>
   ) => {
     actions.setSubmitting(true);
-    dispatch(login(values));
+    dispatch(loginUser(values));
   };
 
   useEffect(() => {
     const formikCurrentRef = formikRef.current as any;
-    if (isError) {
+    if (error) {
       formikCurrentRef.setSubmitting(false);
       setFormStatus(formStatusProps.error);
-      dispatch(reset());
     }
-    if (user || isSuccess) {
+    if (user) {
       setFormStatus(formStatusProps.success);
       formikCurrentRef.setSubmitting(false);
       navigate("/");
@@ -70,10 +69,7 @@ const SignInForm: React.FunctionComponent = () => {
     setDisplayFormStatus(true);
   }, [
     user,
-    isLoading,
-    isError,
-    isSuccess,
-    message,
+    error,
     navigate,
     dispatch,
     formikRef,

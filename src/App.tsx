@@ -10,11 +10,12 @@ import SignInForm from "./components/signInForm";
 import SignUpForm from "./components/signUpForm/index";
 import VacanciesPage from "./pages/VacanciesPage";
 import CoursesPage from "./pages/CoursesPage";
-import {useSelector} from "react-redux";
 import axios from 'axios';
+import {useAppSelector} from "./hooks/redutx";
 
 const App: React.FC = () => {
-  const { user } = useSelector((state: any) => state.auth);
+  const { user } = useAppSelector((state) => state.authReducer);
+  console.log(user)
   if (user && user.token) {
     axios.defaults.headers.common['Authorization'] = `Bearer ${user.token}`;
   }

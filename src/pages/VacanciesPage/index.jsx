@@ -5,7 +5,7 @@ import Layout from "../../layout";
 import {
     getVacancyApplications,
     updateVacancyApplication
-} from "../../features/vacancyApplication/vacancyApplicationSlice";
+} from "../../store/reducers/vacancyApplication/vacancyApplicationSlice";
 import {useDispatch, useSelector} from "react-redux";
 import FadeIn from "../../components/ui/fadeIn";
 import {DragDropContext, Draggable, Droppable} from "react-beautiful-dnd";

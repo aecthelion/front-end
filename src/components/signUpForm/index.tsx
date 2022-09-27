@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom";
 import { Formik, FormikHelpers } from "formik";
 import validationSchema from "../userProfile/validationSchema";
 import SignUpFormComponent from "./singUpFormComponent";
-import { register, reset } from "./../../features/auth/authSlice";
 import { dataToFormData } from "../../utils/dataToFormData";
 import { AppDispatch } from "../../store/store";
 import AuthSideTitle from "../ui/authSideTitle";
@@ -44,7 +43,8 @@ const formStatusProps: IFormStatusProps = {
 };
 
 const SignUpForm: React.FunctionComponent = () => {
-  const navigate = useNavigate();
+  return <div>hello</div>
+  /*const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
   const formikRef: any = createRef();
   const { user, isLoading, isError, isSuccess, message } = useSelector(
@@ -137,7 +137,7 @@ const SignUpForm: React.FunctionComponent = () => {
         </Formik>
       </Box>
     </Container>
-  );
+  );*/
 };
 
 export default SignUpForm;
