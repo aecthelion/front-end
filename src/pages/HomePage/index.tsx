@@ -11,6 +11,7 @@ import QuestionsSection from "./questionsSection";
 import Footer from "./footer";
 
 const HomePage: React.FC = () => {
+
   return (
     <>
       <Container

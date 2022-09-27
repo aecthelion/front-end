@@ -8,15 +8,10 @@ const CustomParticles = () => {
     await loadFull(main);
   };
 
-  const particlesLoaded = (container) => {
-    console.log(container);
-  };
-
   return (
     <Particles
       id="tsparticles"
       init={particlesInit}
-      loaded={particlesLoaded}
       options={particleConfig}
       style={{
         position: "absolute",
