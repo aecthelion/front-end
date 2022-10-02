@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+import { motion } from 'framer-motion';
 
 interface IFadeIn {
   children: JSX.Element | JSX.Element[];
@@ -8,8 +8,8 @@ interface IFadeIn {
 const FadeIn = ({ children, type }: IFadeIn) => {
   return (
     <motion.div
-      initial={type === "default" ? "hidden" : { x: "-100%" }}
-      whileInView={type === "default" ? "visible" : { x: 0 }}
+      initial={type === 'default' ? 'hidden' : { x: '-100%' }}
+      whileInView={type === 'default' ? 'visible' : { x: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.7 }}
       variants={{

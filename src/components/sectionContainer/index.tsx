@@ -1,5 +1,5 @@
-import { Grid, Box } from "@mui/material";
-import SectionSideTitle from "../ui/sectionSideTitle";
+import { Box } from '@mui/material';
+import SectionSideTitle from '../ui/sectionSideTitle';
 
 interface ISectionContainer {
   sideTitle: string;
@@ -11,13 +11,13 @@ const SectionContainer = ({ sideTitle, children }: ISectionContainer) => {
     <section>
       <Box
         sx={{
-          margin: "50px 0",
-          position: "relative",
+          margin: '50px 0',
+          position: 'relative',
 
-          paddingLeft: "30px",
+          paddingLeft: '30px',
         }}
       >
-        <Box sx={{ position: "absolute", left: "-20px" }}>
+        <Box sx={{ position: 'absolute', left: '-20px' }}>
           <SectionSideTitle title={sideTitle} />
         </Box>
 

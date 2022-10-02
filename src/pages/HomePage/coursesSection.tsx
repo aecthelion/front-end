@@ -1,28 +1,28 @@
-import { Grid, Box } from "@mui/material";
-import SectionContainer from "../../components/sectionContainer";
-import Course from "../../components/ui/course";
+import { Box } from '@mui/material';
+import SectionContainer from '../../components/sectionContainer';
+import Course from '../../components/ui/course';
 
-import SectionText from "../../components/ui/sectionText";
-import SectionTitle from "../../components/ui/sectionTitle";
+import SectionText from '../../components/ui/sectionText';
+import SectionTitle from '../../components/ui/sectionTitle';
 
 const CoursesSection = () => (
   <SectionContainer sideTitle="Курси">
     <Box
       sx={{
-        display: "flex",
+        display: 'flex',
         flexWrap: {
-          xl: "nowrap",
-          lg: "nowrap",
-          md: "nowrap",
-          sm: "wrap",
-          xs: "wrap",
+          xl: 'nowrap',
+          lg: 'nowrap',
+          md: 'nowrap',
+          sm: 'wrap',
+          xs: 'wrap',
         },
-        justifyContent: "space-between",
-        gap: "50px",
+        justifyContent: 'space-between',
+        gap: '50px',
       }}
     >
-      <Box sx={{ maxWidth: "550px" }}>
-        <Box marginBottom={"20px"}>
+      <Box sx={{ maxWidth: '550px' }}>
+        <Box marginBottom={'20px'}>
           <SectionTitle
             title="навчання "
             spanText="у власному режимі"
@@ -35,9 +35,9 @@ const CoursesSection = () => (
       </Box>
       <Box
         sx={{
-          display: "flex",
-          flexDirection: "column",
-          gap: "50px",
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '50px',
         }}
       >
         <Course

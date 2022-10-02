@@ -1,6 +1,6 @@
-import { animate } from "framer-motion";
-import { useEffect, useState } from "react";
-import SectionTitle from "../sectionTitle";
+import { animate } from 'framer-motion';
+import { useEffect, useState } from 'react';
+import SectionTitle from '../sectionTitle';
 
 interface IAnimatedCounter {
   from: number;
@@ -29,6 +29,7 @@ const AnimatedCounter = ({ from, to, InView }: IAnimatedCounter) => {
 
       return () => controls.stop();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [from, to, isStarted]);
   return <SectionTitle title="" type="" spanText={`< ${Math.round(count)}$`} />;
 };

@@ -1,27 +1,32 @@
-import axios from "axios";
-import { ILogin } from "./courseSlice";
+import axios from 'axios';
+import { ICourseListParams } from '../../../models/ICourse';
+import { IUpdateCourse } from './courseSlice';
 
-const API_URL = "http://localhost:5000/api/auth";
+const API_URL = 'http://localhost:5000/api/course';
 
-const register = async (userData: any) => {
-  const response = await axios.post(`${API_URL}/register`, userData);
+const getCourses = async (courseListParams: ICourseListParams) => {
+  const { page, pageSize, searchParams } = courseListParams;
+  const response = await axios.get(
+    `${API_URL}/list?page=${page}&pageSize=${pageSize}${
+      searchParams ? `&searchParams=${searchParams}` : ''
+    }`
+  );
 
   return response.data;
 };
 
-const login = async (userData: ILogin) => {
-  const response = await axios.post(`${API_URL}/login`, userData);
-
-  if (response.data) {
-    localStorage.setItem("user",  JSON.stringify(response.data));
-  }
+const updateCourse = async (data: IUpdateCourse) => {
+  const response = await axios.patch(
+    `${API_URL}/${data.courseId}`,
+    data.course
+  );
 
   return response.data;
 };
 
 const courseService = {
-  register,
-  login,
+  get: getCourses,
+  update: updateCourse,
 };
 
 export default courseService;

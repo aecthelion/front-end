@@ -1,19 +1,19 @@
 import React, { createRef, useEffect, useState } from 'react';
 import { Formik, FormikHelpers } from 'formik';
 import validationSchema from './validationSchema';
-import { useNavigate } from 'react-router-dom';
 import { Box, Container } from '@mui/material';
-import AuthSideTitle from '../ui/authSideTitle';
+import { IVacancy } from '../../../models/IVacancy';
+import { useAppDispatch, useAppSelector } from './../../../hooks/redux';
 import {
-  loginUser,
-  resetAuthStatus,
-} from '../../store/reducers/auth/authSlice';
-import { SignInFormComponent } from './signinFormComponents';
-import { useAppDispatch, useAppSelector } from '../../hooks/redux';
+  createVacancy,
+  reset,
+} from '../../../store/reducers/vacancy/vacancySlice';
+import { NewVacancyFormComponent } from './newVacancyFormComponents';
+import ModalTitle from '../../ui/modalTitle';
+import { closeCenterModal } from '../../../store/reducers/modal/modalSlice';
 
-export interface ISignInForm {
-  password: string;
-  email: string;
+interface INewVacancyProps {
+  status: number;
 }
 
 export interface IFormStatus {
@@ -27,61 +27,56 @@ interface IFormStatusProps {
 
 const formStatusProps: IFormStatusProps = {
   success: {
-    message: 'Login successful',
+    message: 'Successfully created',
     type: 'success',
   },
   error: {
-    message: 'Enter correct login data',
+    message: 'Problem with creating, please try again later',
     type: 'error',
   },
 };
 
-const SignInForm: React.FunctionComponent = () => {
-  const navigate = useNavigate();
+const AddNewVacancy: React.FunctionComponent<INewVacancyProps> = ({
+  status = 0,
+}) => {
   const dispatch = useAppDispatch();
   const formikRef: any = createRef();
-
-  const { user, loginStatus } = useAppSelector((state) => state.auth);
-  const { isError, isSuccess, error } = loginStatus;
+  const { isLoading, isError, isSuccess, error } = useAppSelector(
+    (state) => state.vacancies
+  );
   const [displayFormStatus, setDisplayFormStatus] = useState(false);
   const [formStatus, setFormStatus] = useState<IFormStatus>({
     message: '',
     type: '',
   });
 
-  const onSubmit = (
-    values: ISignInForm,
-    actions: FormikHelpers<ISignInForm>
-  ) => {
+  const onSubmit = (values: IVacancy, actions: FormikHelpers<IVacancy>) => {
     actions.setSubmitting(true);
-    dispatch(loginUser(values));
+    dispatch(createVacancy(values));
   };
 
   useEffect(() => {
     const formikCurrentRef = formikRef.current as any;
     if (isError) {
       formikCurrentRef.setSubmitting(false);
-      setFormStatus({ type: 'error', message: error });
-      dispatch(resetAuthStatus('loginStatus'));
+      setFormStatus({
+        message: error,
+        type: 'error',
+      });
+      dispatch(reset());
     }
-
-    setDisplayFormStatus(true);
-  }, [isError, error, dispatch, formikRef]);
-
-  useEffect(() => {
-    const formikCurrentRef = formikRef.current as any;
-    if (user || isSuccess) {
+    if (isSuccess) {
       setFormStatus(formStatusProps.success);
       formikCurrentRef.setSubmitting(false);
-      navigate('/');
+      dispatch(closeCenterModal());
     }
-  }, [user, isSuccess, navigate, formikRef]);
+    setDisplayFormStatus(true);
+  }, [isLoading, isError, isSuccess, error, dispatch, formikRef]);
 
   return (
     <Container
       maxWidth="sm"
       sx={{
-        height: '100vh',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
@@ -91,21 +86,27 @@ const SignInForm: React.FunctionComponent = () => {
         sx={{
           display: 'flex',
           alignItems: 'center',
+          flexDirection: 'column',
           position: 'relative',
         }}
       >
-        <AuthSideTitle title="rock" spanTitle="it" leftPosition="-95px" />
+        <ModalTitle title={'Create vacancy application'} />
         <Formik
           initialValues={{
-            email: '',
-            password: '',
+            jobTitle: '',
+            companyName: '',
+            vacancyLink: '',
+            country: '',
+            city: '',
+            status: String(status),
+            vacancyType: '',
           }}
           onSubmit={onSubmit}
           validationSchema={validationSchema}
           innerRef={formikRef}
         >
           {(props: any) => (
-            <SignInFormComponent
+            <NewVacancyFormComponent
               {...props}
               displayFormStatus={displayFormStatus}
               formStatus={formStatus}
@@ -117,4 +118,4 @@ const SignInForm: React.FunctionComponent = () => {
   );
 };
 
-export default SignInForm;
+export default AddNewVacancy;

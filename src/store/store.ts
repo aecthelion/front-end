@@ -1,18 +1,27 @@
-import {combineReducers, configureStore} from "@reduxjs/toolkit";
-import authReducer from "./reducers/auth/authSlice";
-import vacancyApplicationReducer from "./reducers/vacancyApplication/vacancyApplicationSlice";
-
+import { configureStore } from '@reduxjs/toolkit';
+import auth from './reducers/auth/authSlice';
+import modal from './reducers/modal/modalSlice';
+import users from './reducers/users/usersSlice';
+import vacancies from './reducers/vacancy/vacancySlice';
+import courses from './reducers/course/courseSlice';
+import systemNotification from './reducers/systemNotification/systemNotification';
+import { combineReducers } from '@reduxjs/toolkit';
 
 const rootReducer = combineReducers({
-  authReducer
-})
+  auth,
+  vacancies,
+  modal,
+  users,
+  courses,
+  systemNotification,
+});
 
 export const setupStore = () => {
   return configureStore({
-    reducer: rootReducer
-  })
-}
+    reducer: rootReducer,
+  });
+};
 
-export type RootState = ReturnType<typeof rootReducer>
-export type AppStore = ReturnType<typeof setupStore>
-export type AppDispatch = AppStore['dispatch']
+export type RootState = ReturnType<typeof rootReducer>;
+export type AppStore = ReturnType<typeof setupStore>;
+export type AppDispatch = AppStore['dispatch'];

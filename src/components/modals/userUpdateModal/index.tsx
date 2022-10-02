@@ -1,24 +1,36 @@
-import React, { useState, useEffect, createRef } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState, useEffect, createRef } from 'react';
 import { Formik, FormikHelpers } from 'formik';
 import validationSchema from './validationSchema';
-import SignUpFormComponent from './singUpFormComponent';
-import { dataToFormData } from '../../utils/dataToFormData';
-import AuthSideTitle from '../ui/authSideTitle';
+import SignUpFormComponent from './userUpdateFormComponent';
+import AuthSideTitle from '../../ui/authSideTitle';
 import { Container, Box } from '@mui/material';
-import { useAppDispatch, useAppSelector } from './../../hooks/redux';
+import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
 import {
-  registerUser,
-  resetAuthStatus,
-} from '../../store/reducers/auth/authSlice';
+  updateUser,
+  resetStatus,
+} from './../../../store/reducers/users/usersSlice';
 
-export interface ISignUpForm {
+interface IUserData {
   firstName: string;
   lastName: string;
   password: string;
-  confirmPassword: string;
   email: string;
-  avatar: string;
+  role: string;
+  avatar?: string;
+  _id?: string;
+}
+
+interface IUserUpdateModalProps {
+  userData: IUserData;
+  onSuccess: () => void;
+}
+
+export interface IUserUpdateModal extends IUserData {
+  confirmPassword: string;
+}
+
+interface IUserUpdateModalProps {
+  userData: IUserData;
 }
 
 export interface IFormStatus {
@@ -32,25 +44,18 @@ interface IFormStatusProps {
 
 const formStatusProps: IFormStatusProps = {
   success: {
-    message: 'Signed up successfully.',
+    message: 'Updated successfully.',
     type: 'success',
-  },
-  duplicate: {
-    message: 'Email already exist. Please use different email.',
-    type: 'error',
-  },
-  error: {
-    message: 'Something went wrong. Please try again.',
-    type: 'error',
   },
 };
 
-const SignUpForm: React.FunctionComponent = () => {
-  const navigate = useNavigate();
+const UserUpdateModal = ({ userData, onSuccess }: IUserUpdateModalProps) => {
   const dispatch = useAppDispatch();
   const formikRef: any = createRef();
-  const { user, registerStatus } = useAppSelector((state) => state.auth);
-  const { isError, isSuccess, error } = registerStatus;
+
+  const { isError, isSuccess, error } = useAppSelector(
+    (state) => state.users.updateUser.statuses
+  );
   const [displayFormStatus, setDisplayFormStatus] = useState(false);
   const [formStatus, setFormStatus] = useState<IFormStatus>({
     message: '',
@@ -58,44 +63,44 @@ const SignUpForm: React.FunctionComponent = () => {
   });
 
   const onSubmit = (
-    values: ISignUpForm,
-    actions: FormikHelpers<ISignUpForm>
+    values: IUserUpdateModal,
+    actions: FormikHelpers<IUserUpdateModal>
   ) => {
     actions.setSubmitting(true);
-    const data: FormData = dataToFormData(values);
-
-    dispatch(registerUser(data));
+    if (userData._id) {
+      dispatch(updateUser({ user: values, userId: userData._id }));
+    }
   };
 
   useEffect(() => {
     const formikCurrentRef = formikRef.current as any;
     if (isError) {
-      setFormStatus({ type: 'error', message: 'error' });
+      setFormStatus({
+        message: error,
+        type: 'error',
+      });
+
       formikCurrentRef.setSubmitting(false);
-      dispatch(resetAuthStatus('registerStatus'));
+      dispatch(resetStatus('updateUser'));
     }
     setDisplayFormStatus(true);
-  }, [isError, error, navigate, dispatch, formikRef]);
+  }, [isError, error, dispatch, formikRef]);
 
   useEffect(() => {
-    const formikCurrentRef = formikRef.current as any;
-    if (user || isSuccess) {
+    if (isSuccess) {
       setFormStatus(formStatusProps.success);
-      formikCurrentRef.setSubmitting(false);
-      dispatch(resetAuthStatus('registerStatus'));
-      navigate('/login');
+      onSuccess();
     }
-    setDisplayFormStatus(true);
-  }, [user, isSuccess, dispatch, navigate, formikRef]);
+  }, [isSuccess, dispatch, onSuccess]);
 
   return (
     <Container
       maxWidth="sm"
       sx={{
-        height: '100vh',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
+        minWidth: '700px',
       }}
     >
       <Box
@@ -108,12 +113,12 @@ const SignUpForm: React.FunctionComponent = () => {
         <AuthSideTitle title="rock" spanTitle="it" leftPosition="-95px" />
         <Formik
           initialValues={{
-            firstName: '',
-            lastName: '',
+            firstName: userData.firstName,
+            lastName: userData.lastName,
+            email: userData.email,
+            role: userData.role ? userData.role : 'user',
             password: '',
             confirmPassword: '',
-            email: '',
-            avatar: '',
           }}
           onSubmit={onSubmit}
           innerRef={formikRef}
@@ -133,4 +138,4 @@ const SignUpForm: React.FunctionComponent = () => {
   );
 };
 
-export default SignUpForm;
+export default UserUpdateModal;

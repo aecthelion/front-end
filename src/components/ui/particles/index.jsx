@@ -1,7 +1,6 @@
-import Particles from "react-tsparticles";
-import { loadFull } from "tsparticles";
-import { useCallback } from "react";
-import { particleConfig } from "./options";
+import Particles from 'react-tsparticles';
+import { loadFull } from 'tsparticles';
+import { particleConfig } from './options';
 
 const CustomParticles = () => {
   const particlesInit = async (main) => {
@@ -14,8 +13,8 @@ const CustomParticles = () => {
       init={particlesInit}
       options={particleConfig}
       style={{
-        position: "absolute",
-        height: "40vh",
+        position: 'absolute',
+        height: '40vh',
       }}
     />
   );

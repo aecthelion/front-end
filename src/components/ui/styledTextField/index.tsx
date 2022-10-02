@@ -3,8 +3,8 @@ import {
   InputProps,
   FilledInputProps,
   OutlinedInputProps,
-} from "@mui/material";
-import { ChangeEventHandler, FocusEventHandler } from "react";
+} from '@mui/material';
+import { ChangeEventHandler, FocusEventHandler } from 'react';
 
 interface IAdornment {
   adornment:
@@ -59,9 +59,9 @@ const StyledTextField = (props: IStyledTextField) => {
       onChange={onChange}
       onBlur={onBlur}
       sx={{
-        borderRadius: "14px",
-        ":root": {
-          borderRadius: "12px",
+        borderRadius: '14px',
+        ':root': {
+          borderRadius: '12px',
         },
       }}
       {...rest}
