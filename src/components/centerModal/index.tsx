@@ -6,10 +6,12 @@ import { Paper } from '@mui/material';
 import { COLORS } from './../../helpers/theme';
 import AddNewVacancy from './../modals/addNewVacancy';
 import UserUpdateModal from '../modals/userUpdateModal';
+import CourseModal from '../modals/courseModal';
 
 const modals = (props: any) => ({
   AddNewVacancy: <AddNewVacancy {...props} />,
   UserUpdateModal: <UserUpdateModal {...props} />,
+  CourseModal: <CourseModal {...props} />,
 });
 
 const CenterModal = () => {

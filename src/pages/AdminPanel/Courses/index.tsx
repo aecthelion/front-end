@@ -17,7 +17,7 @@ import moment from 'moment';
 import { useEffect, useRef, useState } from 'react';
 import { mainUrl } from '../../../helpers';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
-import { Search, SettingsSuggest } from '@mui/icons-material';
+import { Add, Search, SettingsSuggest } from '@mui/icons-material';
 
 import { ICourse } from './../../../models/ICourse';
 import {
@@ -31,7 +31,7 @@ import {
 } from '../../../store/reducers/systemNotification/systemNotification';
 import {
   changeCoursePage,
-  resetStatus,
+  resetCourseStatus,
   getCourses,
 } from '../../../store/reducers/course/courseSlice';
 
@@ -81,7 +81,7 @@ export default function CoursesTab() {
   };
 
   useEffect(() => {
-    dispatch(resetStatus('courseList'));
+    dispatch(resetCourseStatus('courseList'));
     const searchDebounce = setTimeout(
       () => {
         dispatch(
@@ -110,29 +110,32 @@ export default function CoursesTab() {
     return () => {
       if (componentWillUnmount.current) {
         dispatch(resetNotification());
-        dispatch(resetStatus('courseList'));
+        dispatch(resetCourseStatus('courseList'));
       }
     };
   }, [dispatch]);
 
-  const onSuccess = () => {
+  const onSuccess = (type: string) => {
     dispatch(
       openSystemNotification({
         type: 'success',
-        text: 'Updated successfully',
+        text: `${type === 'create' ? 'Created' : 'Updated'} successfully`,
       })
     );
     dispatch(closeCenterModal());
-    dispatch(resetStatus('updateCourse'));
+    dispatch(
+      resetCourseStatus(type === 'create' ? 'courseCreate' : 'courseUpdate')
+    );
   };
 
-  const handleUserClick = (courseData: ICourse) => {
+  const handleCourseClick = (type: string, course?: ICourse) => {
     dispatch(
       openCenterModal({
-        type: 'UserUpdateModal',
+        type: 'CourseModal',
         props: {
-          userData: courseData,
           onSuccess,
+          type,
+          courseData: course,
         },
       })
     );
@@ -182,6 +185,12 @@ export default function CoursesTab() {
                         value={searchParam}
                         onChange={handleSearchChange}
                       />
+                      <Button
+                        variant="contained"
+                        onClick={() => handleCourseClick('create')}
+                      >
+                        <Add />
+                      </Button>
                     </Paper>
                   )}
                 </TableCell>
@@ -231,7 +240,9 @@ export default function CoursesTab() {
                         );
                       } else if (column.id === 'search') {
                         value = (
-                          <Button onClick={() => handleUserClick(course)}>
+                          <Button
+                            onClick={() => handleCourseClick('update', course)}
+                          >
                             <SettingsSuggest />
                           </Button>
                         );

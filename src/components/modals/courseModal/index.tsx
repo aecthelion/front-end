@@ -1,35 +1,23 @@
 import { useState, useEffect, createRef } from 'react';
 import { Formik, FormikHelpers } from 'formik';
 import validationSchema from './validationSchema';
-import SignUpFormComponent from './userUpdateFormComponent';
+import CourseFormComponent from './courseFormComponent';
 import { Container, Box } from '@mui/material';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
+
+import { ICourse } from '../../../models/ICourse';
 import {
-  updateUser,
-  resetStatus,
-} from './../../../store/reducers/users/usersSlice';
+  createCourse,
+  updateCourse,
+  resetCourseStatus,
+} from '../../../store/reducers/course/courseSlice';
+import { IUpdateCourseBody } from '../../../store/reducers/course/courseSlice';
+import { dataToFormData } from '../../../utils/dataToFormData';
 
-interface IUserData {
-  firstName: string;
-  lastName: string;
-  password: string;
-  email: string;
-  role: string;
-  avatar?: string;
-  _id?: string;
-}
-
-interface IUserUpdateModalProps {
-  userData: IUserData;
-  onSuccess: () => void;
-}
-
-export interface IUserUpdateModal extends IUserData {
-  confirmPassword: string;
-}
-
-interface IUserUpdateModalProps {
-  userData: IUserData;
+export interface ICourseModalProps {
+  courseData?: ICourse;
+  type: 'update' | 'create';
+  onSuccess: (type: string) => void;
 }
 
 export interface IFormStatus {
@@ -48,49 +36,69 @@ const formStatusProps: IFormStatusProps = {
   },
 };
 
-const UserUpdateModal = ({ userData, onSuccess }: IUserUpdateModalProps) => {
+const CourseModal = ({
+  courseData,
+  type = 'create',
+  onSuccess,
+}: ICourseModalProps) => {
   const dispatch = useAppDispatch();
+  const formInitialValues =
+    type === 'create'
+      ? {
+          title: '',
+          type: '',
+          icon: '',
+        }
+      : { title: courseData?.title || '', type: courseData?.type || '' };
   const formikRef: any = createRef();
 
-  const { isError, isSuccess, error } = useAppSelector(
-    (state) => state.users.updateUser.statuses
+  const { courseCreate, courseUpdate } = useAppSelector(
+    (state) => state.courses
   );
   const [displayFormStatus, setDisplayFormStatus] = useState(false);
+  const statusType = type === 'create' ? 'courseCreate' : 'courseUpdate';
+  const currentStatus =
+    type === 'create' ? courseCreate.statuses : courseUpdate.statuses;
   const [formStatus, setFormStatus] = useState<IFormStatus>({
     message: '',
     type: '',
   });
 
   const onSubmit = (
-    values: IUserUpdateModal,
-    actions: FormikHelpers<IUserUpdateModal>
+    values: ICourse | IUpdateCourseBody,
+    actions: FormikHelpers<ICourse | IUpdateCourseBody>
   ) => {
     actions.setSubmitting(true);
-    if (userData._id) {
-      dispatch(updateUser({ user: values, userId: userData._id }));
+    const data: FormData = dataToFormData(values);
+    if (type === 'create') {
+      dispatch(createCourse(data));
+    } else {
+      dispatch(updateCourse({ course: values, courseId: courseData?._id }));
     }
   };
 
   useEffect(() => {
     const formikCurrentRef = formikRef.current as any;
-    if (isError) {
+
+    if (currentStatus.isError) {
       setFormStatus({
-        message: error,
+        message: currentStatus.error,
         type: 'error',
       });
 
       formikCurrentRef.setSubmitting(false);
-      dispatch(resetStatus('updateUser'));
+      dispatch(resetCourseStatus(statusType));
     }
+
     setDisplayFormStatus(true);
-  }, [isError, error, dispatch, formikRef]);
+  }, [currentStatus, dispatch, formikRef, statusType]);
 
   useEffect(() => {
-    if (isSuccess) {
+    if (currentStatus.isSuccess) {
       setFormStatus(formStatusProps.success);
-      onSuccess();
+      onSuccess(type);
     }
-  }, [isSuccess, dispatch, onSuccess]);
+  }, [currentStatus, dispatch, onSuccess, type]);
 
   return (
     <Container
@@ -110,24 +118,18 @@ const UserUpdateModal = ({ userData, onSuccess }: IUserUpdateModalProps) => {
         }}
       >
         <Formik
-          initialValues={{
-            firstName: userData.firstName,
-            lastName: userData.lastName,
-            email: userData.email,
-            role: userData.role ? userData.role : 'user',
-            password: '',
-            confirmPassword: '',
-          }}
+          initialValues={formInitialValues}
           onSubmit={onSubmit}
           innerRef={formikRef}
           encType="multipart/form-data"
           validationSchema={validationSchema}
         >
           {(props) => (
-            <SignUpFormComponent
+            <CourseFormComponent
               {...props}
               displayFormStatus={displayFormStatus}
               formStatus={formStatus}
+              type={type}
             />
           )}
         </Formik>
@@ -136,4 +138,4 @@ const UserUpdateModal = ({ userData, onSuccess }: IUserUpdateModalProps) => {
   );
 };
 
-export default UserUpdateModal;
+export default CourseModal;

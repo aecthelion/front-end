@@ -3,8 +3,8 @@ export interface ICourse {
   title: string;
   type: string;
   icon: string;
-  createdAt: string;
-  updatedAt: string;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 export interface ICourseListParams {

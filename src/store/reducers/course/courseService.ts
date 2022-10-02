@@ -24,9 +24,16 @@ const updateCourse = async (data: IUpdateCourse) => {
   return response.data;
 };
 
+const create = async (data: FormData) => {
+  const response = await axios.post(`${API_URL}`, data);
+
+  return response.data;
+};
+
 const courseService = {
   get: getCourses,
   update: updateCourse,
+  create,
 };
 
 export default courseService;

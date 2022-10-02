@@ -1,11 +1,13 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { IUserUpdateModal } from '../../../components/modals/userUpdateModal';
 import courseService from './courseService';
 import { IStatus } from './../../../models/IStatus';
 import { ICourseListParams, ICourse } from '../../../models/ICourse';
 
 interface ICourseReducer {
-  updateCourse: {
+  courseUpdate: {
+    statuses: IStatus;
+  };
+  courseCreate: {
     statuses: IStatus;
   };
   courseList: {
@@ -16,9 +18,14 @@ interface ICourseReducer {
   };
 }
 
+export interface IUpdateCourseBody {
+  title: string;
+  type: string;
+}
+
 export interface IUpdateCourse {
-  course: IUserUpdateModal;
-  courseId: string;
+  course?: IUpdateCourseBody;
+  courseId?: string;
 }
 
 const initialState: ICourseReducer = {
@@ -33,7 +40,15 @@ const initialState: ICourseReducer = {
       error: '',
     },
   },
-  updateCourse: {
+  courseUpdate: {
+    statuses: {
+      isError: false,
+      isSuccess: false,
+      isLoading: false,
+      error: '',
+    },
+  },
+  courseCreate: {
     statuses: {
       isError: false,
       isSuccess: false,
@@ -48,6 +63,23 @@ export const updateCourse = createAsyncThunk(
   async (data: IUpdateCourse, thunkApi) => {
     try {
       return await courseService.update(data);
+    } catch (error: any) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toSting();
+      return thunkApi.rejectWithValue(message);
+    }
+  }
+);
+
+export const createCourse = createAsyncThunk(
+  'course/create',
+  async (data: FormData, thunkApi) => {
+    try {
+      return await courseService.create(data);
     } catch (error: any) {
       const message =
         (error.response &&
@@ -94,7 +126,7 @@ export const courseSlice = createSlice({
         courses: [],
       };
     },
-    resetStatus: (state, action) => {
+    resetCourseStatus: (state, action) => {
       state[action.payload as keyof typeof initialState].statuses = {
         isError: false,
         isSuccess: false,
@@ -109,24 +141,42 @@ export const courseSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(updateCourse.pending, (state) => {
-        state.updateCourse.statuses.isLoading = true;
+        state.courseUpdate.statuses.isLoading = true;
       })
       .addCase(updateCourse.fulfilled, (state, action) => {
-        state.updateCourse.statuses.isError = false;
-        state.updateCourse.statuses.isSuccess = true;
+        state.courseUpdate.statuses.isError = false;
+        state.courseUpdate.statuses.isSuccess = true;
         state.courseList.courses = [...state.courseList.courses].map((v) => {
-          if (v._id === action.payload.user._id) {
-            return action.payload.user;
+          if (v._id === action.payload.course._id) {
+            return action.payload.course;
           } else {
             return v;
           }
         });
-        state.updateCourse.statuses.isLoading = false;
+        state.courseUpdate.statuses.isLoading = false;
       })
       .addCase(updateCourse.rejected, (state, action: PayloadAction<any>) => {
-        state.updateCourse.statuses.isLoading = false;
-        state.updateCourse.statuses.isError = true;
-        state.updateCourse.statuses.error = action.payload;
+        state.courseUpdate.statuses.isLoading = false;
+        state.courseUpdate.statuses.isError = true;
+        state.courseUpdate.statuses.error = action.payload;
+      })
+
+      .addCase(createCourse.pending, (state) => {
+        state.courseCreate.statuses.isLoading = true;
+      })
+      .addCase(createCourse.fulfilled, (state, action) => {
+        state.courseCreate.statuses.isError = false;
+        state.courseCreate.statuses.isSuccess = true;
+        state.courseList.courses = [
+          ...state.courseList.courses,
+          action.payload,
+        ];
+        state.courseCreate.statuses.isLoading = false;
+      })
+      .addCase(createCourse.rejected, (state, action: PayloadAction<any>) => {
+        state.courseCreate.statuses.isLoading = false;
+        state.courseCreate.statuses.isError = true;
+        state.courseCreate.statuses.error = action.payload;
       })
       .addCase(getCourses.pending, (state) => {
         state.courseList.statuses.isLoading = true;
@@ -146,9 +196,6 @@ export const courseSlice = createSlice({
   },
 });
 
-export const {
-  resetCourseList: resetList,
-  resetStatus,
-  changeCoursePage,
-} = courseSlice.actions;
+export const { resetCourseList, resetCourseStatus, changeCoursePage } =
+  courseSlice.actions;
 export default courseSlice.reducer;
