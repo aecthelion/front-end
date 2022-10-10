@@ -114,11 +114,8 @@ export const vacancySlice = createSlice({
         state.isError = false;
         state.isSuccess = true;
         state.vacancies = [...state.vacancies].map((v) => {
-          if (v._id === action.payload._id) {
-            return {
-              ...v,
-              status: action.payload.status,
-            };
+          if (v._id === action.payload.vacancy?._id) {
+            return action.payload.vacancy;
           } else {
             return v;
           }

@@ -24,8 +24,6 @@ export const NewVacancyFormComponent: React.FC<
 > = ({ displayFormStatus, formStatus, ...props }) => {
   const { values, touched, errors, handleBlur, handleChange, isSubmitting } =
     props;
-
-  console.log(values);
   return (
     <Form>
       <Box

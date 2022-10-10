@@ -190,71 +190,77 @@ export default function UsersTab() {
           </TableHead>
           {!isLoading && (
             <TableBody>
-              {users.map((user: IUser) => {
-                return (
-                  <TableRow hover role="checkbox" tabIndex={-1} key={user._id}>
-                    {columns.map((column) => {
-                      let value;
-                      if (column.id === 'name') {
-                        value = (
-                          <Box
-                            sx={{
-                              display: 'flex',
-                              alignItems: 'center',
-                              gap: '5px',
-                            }}
-                          >
+              {users &&
+                users.map((user: IUser) => {
+                  return (
+                    <TableRow
+                      hover
+                      role="checkbox"
+                      tabIndex={-1}
+                      key={user._id}
+                    >
+                      {columns.map((column) => {
+                        let value;
+                        if (column.id === 'name') {
+                          value = (
                             <Box
                               sx={{
-                                background: `url(${mainUrl}${user.avatar}) center / cover no-repeat`,
-                                borderRadius: '50%',
-                                height: 32,
-                                width: 32,
-                                minWidth: 32,
-                                padding: 0,
-                              }}
-                            />
-                            <Typography
-                              sx={{
-                                textOverflow: 'ellipsis',
-                                overflow: 'hidden',
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: '5px',
                               }}
                             >
-                              {user.firstName} {user.lastName}
+                              <Box
+                                sx={{
+                                  background: `url(${mainUrl}${user.avatar}) center / cover no-repeat`,
+                                  borderRadius: '50%',
+                                  height: 32,
+                                  width: 32,
+                                  minWidth: 32,
+                                  padding: 0,
+                                }}
+                              />
+                              <Typography
+                                sx={{
+                                  textOverflow: 'ellipsis',
+                                  overflow: 'hidden',
+                                }}
+                              >
+                                {user.firstName} {user.lastName}
+                              </Typography>
+                            </Box>
+                          );
+                        } else if (column.id === 'search') {
+                          value = (
+                            <Button onClick={() => handleUserClick(user)}>
+                              <SettingsSuggest />
+                            </Button>
+                          );
+                        } else {
+                          value = (
+                            <Typography>
+                              {column.id === 'createdAt' ||
+                              column.id === 'updatedAt'
+                                ? moment(
+                                    user[column.id as keyof typeof user]
+                                  ).fromNow()
+                                : user[column.id as keyof typeof user]}
                             </Typography>
-                          </Box>
-                        );
-                      } else if (column.id === 'search') {
-                        value = (
-                          <Button onClick={() => handleUserClick(user)}>
-                            <SettingsSuggest />
-                          </Button>
-                        );
-                      } else {
-                        value = (
-                          <Typography>
-                            {column.id === 'createdAt' ||
-                            column.id === 'updatedAt'
-                              ? moment(
-                                  user[column.id as keyof typeof user]
-                                ).fromNow()
-                              : user[column.id as keyof typeof user]}
-                          </Typography>
-                        );
-                      }
+                          );
+                        }
 
-                      return (
-                        <TableCell
-                          key={column.id + 'column'}
-                          align={column.align}
-                        >
-                          {value}
-                        </TableCell>
-                      );
-                    })}
-                  </TableRow>
-                );
-              })}
+                        return (
+                          <TableCell
+                            key={column.id + 'column'}
+                            align={column.align}
+                          >
+                            {value}
+                          </TableCell>
+                        );
+                      })}
+                    </TableRow>
+                  );
+                })}
             </TableBody>
           )}
         </Table>

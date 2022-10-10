@@ -14,6 +14,7 @@ import axios from 'axios';
 import { useAppSelector } from './hooks/redux';
 import AdminPanel from './pages/AdminPanel';
 import CenterModal from './components/centerModal';
+import { ApplicationsPage } from './pages/Applications/index';
 
 const App: React.FC = () => {
   const { user } = useAppSelector((state) => state.auth);
@@ -30,6 +31,7 @@ const App: React.FC = () => {
             <Route path="/settings" element={<AdminPanel />} />
             <Route path="/vacancies" element={<VacanciesPage />} />
             <Route path="/courses" element={<CoursesPage />} />
+            <Route path="/applications" element={<ApplicationsPage />} />
           </Route>
           <Route path="/" element={<HomePage />} />
           <Route path="/login" element={<SignInForm />} />

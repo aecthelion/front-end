@@ -2,6 +2,7 @@ import { configureStore } from '@reduxjs/toolkit';
 import auth from './reducers/auth/authSlice';
 import modal from './reducers/modal/modalSlice';
 import users from './reducers/users/usersSlice';
+import userApplication from './reducers/userApplication/userApplicationSlice';
 import vacancies from './reducers/vacancy/vacancySlice';
 import courses from './reducers/course/courseSlice';
 import systemNotification from './reducers/systemNotification/systemNotification';
@@ -14,6 +15,7 @@ const rootReducer = combineReducers({
   users,
   courses,
   systemNotification,
+  userApplication,
 });
 
 export const setupStore = () => {

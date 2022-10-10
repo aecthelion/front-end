@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import {
   Box,
-  CircularProgress,
   Container,
   LinearProgress,
   Paper,
@@ -58,7 +57,10 @@ const initialStages = [
 const VacanciesPage = () => {
   const dispatch = useAppDispatch();
 
-  const [currentDraggabledId, setCurrentDraggableId] = useState(null);
+  const [currentItemsIds, setCurrentItemIds] = useState({
+    droppableTargetId: null,
+    droppableSourceId: null,
+  });
   const { vacancies, isLoading, isSuccess } = useAppSelector(
     (state) => state.vacancies
   );
@@ -68,18 +70,24 @@ const VacanciesPage = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    if (isSuccess && currentDraggabledId) {
-      setCurrentDraggableId(null);
+    if (
+      isSuccess &&
+      (currentItemsIds.droppableSourceId || currentItemsIds.droppableSourceId)
+    ) {
+      setCurrentItemIds({ droppableTargetId: null, droppableSourceId: null });
     }
     dispatch(resetStatus());
-  }, [isLoading, isSuccess, currentDraggabledId, dispatch]);
+  }, [isLoading, isSuccess, currentItemsIds, dispatch]);
 
   const onDragEnd = async (result: any) => {
     if (!result.destination) return;
     const { source, destination, draggableId } = result;
 
     if (source.droppableId !== destination.droppableId) {
-      setCurrentDraggableId(draggableId);
+      setCurrentItemIds({
+        droppableSourceId: source.droppableId,
+        droppableTargetId: destination.droppableId,
+      });
 
       dispatch(
         updateVacancy({
@@ -154,84 +162,98 @@ const VacanciesPage = () => {
                         <AddBox />
                       </Button>
                     </Box>
-                    <Droppable droppableId={String(stage.id)} key={index}>
-                      {(provided, snapshot) => (
-                        <div
-                          {...provided.droppableProps}
-                          ref={provided.innerRef}
-                          style={{
-                            height: 'calc(100% - 40px)',
-                            padding: '5px',
-                            display: 'flex',
-                            flexDirection: 'column',
-                            background: snapshot.isDraggingOver
-                              ? COLORS.mainLight
-                              : COLORS.light,
+                    {(currentItemsIds.droppableSourceId &&
+                      String(currentItemsIds.droppableSourceId) ===
+                        String(stage.id)) ||
+                    (currentItemsIds.droppableTargetId &&
+                      String(currentItemsIds.droppableTargetId) ===
+                        String(stage.id)) ? (
+                      <div
+                        style={{
+                          height: 'calc(100% - 40px)',
+                          padding: '5px',
+                          display: 'flex',
+                          flexDirection: 'column',
+                          justifyContent: 'column',
+                          background: COLORS.light,
+                          borderRadius: '10px',
+                        }}
+                      >
+                        <LinearProgress />
+                      </div>
+                    ) : (
+                      <Droppable droppableId={String(stage.id)} key={index}>
+                        {(provided, snapshot) => (
+                          <div
+                            {...provided.droppableProps}
+                            ref={provided.innerRef}
+                            style={{
+                              height: 'calc(100% - 40px)',
+                              padding: '5px',
+                              display: 'flex',
+                              flexDirection: 'column',
+                              background: snapshot.isDraggingOver
+                                ? COLORS.mainLight
+                                : COLORS.light,
 
-                            borderRadius: '10px',
-                          }}
-                        >
-                          {vacancies.map((item) =>
-                            Number(item.status) === index ? (
-                              <Draggable
-                                draggableId={String(item._id)}
-                                index={index}
-                                key={item._id}
-                              >
-                                {(provided) => (
-                                  <div
-                                    ref={provided.innerRef}
-                                    {...provided.draggableProps}
-                                    {...provided.dragHandleProps}
+                              borderRadius: '10px',
+                            }}
+                          >
+                            {vacancies &&
+                              vacancies.map((item) =>
+                                Number(item.status) === index ? (
+                                  <Draggable
+                                    draggableId={String(item._id)}
+                                    index={index}
+                                    key={item._id}
                                   >
-                                    {currentDraggabledId === item._id ? (
-                                      <Box
-                                        sx={{
-                                          margin: '0 auto',
-                                          width: '105px',
-                                          height: '105px',
-                                        }}
+                                    {(provided) => (
+                                      <div
+                                        ref={provided.innerRef}
+                                        {...provided.draggableProps}
+                                        {...provided.dragHandleProps}
                                       >
-                                        <CircularProgress size={105} />
-                                      </Box>
-                                    ) : (
-                                      <Paper
-                                        sx={{
-                                          display: 'flex',
-                                          alignItems: 'flex-start',
-                                          flexDirection: 'column',
-                                          padding: '10px',
-                                          borderRadius: '8px',
-                                          backgroundColor: 'secondary.light',
-                                          marginBottom: '7px',
-                                        }}
-                                      >
-                                        <Typography sx={{ fontWeight: 'bold' }}>
-                                          {item.companyName}
-                                        </Typography>
-                                        <Typography sx={{ fontSize: '0.8rem' }}>
-                                          {item.jobTitle}
-                                        </Typography>
-                                        {item.updatedAt && (
+                                        <Paper
+                                          sx={{
+                                            display: 'flex',
+                                            alignItems: 'flex-start',
+                                            flexDirection: 'column',
+                                            padding: '10px',
+                                            borderRadius: '8px',
+                                            backgroundColor: 'secondary.light',
+                                            marginBottom: '7px',
+                                          }}
+                                        >
                                           <Typography
-                                            sx={{ marginLeft: 'auto' }}
+                                            sx={{ fontWeight: 'bold' }}
                                           >
-                                            {moment(item.updatedAt).fromNow()}
+                                            {item.companyName}
                                           </Typography>
-                                        )}
-                                      </Paper>
+                                          <Typography
+                                            sx={{ fontSize: '0.8rem' }}
+                                          >
+                                            {item.jobTitle}
+                                          </Typography>
+                                          {item.updatedAt && (
+                                            <Typography
+                                              sx={{ marginLeft: 'auto' }}
+                                            >
+                                              {moment(item.updatedAt).fromNow()}
+                                            </Typography>
+                                          )}
+                                        </Paper>
+                                      </div>
                                     )}
-                                  </div>
-                                )}
-                              </Draggable>
-                            ) : (
-                              ''
-                            )
-                          )}
-                          {provided.placeholder}
-                        </div>
-                      )}
-                    </Droppable>
+                                  </Draggable>
+                                ) : (
+                                  ''
+                                )
+                              )}
+                            {provided.placeholder}
+                          </div>
+                        )}
+                      </Droppable>
+                    )}
                   </Paper>
                 </div>
               ))}

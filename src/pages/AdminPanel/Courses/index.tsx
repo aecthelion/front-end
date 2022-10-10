@@ -199,78 +199,81 @@ export default function CoursesTab() {
           </TableHead>
           {!isLoading && (
             <TableBody>
-              {courses.map((course: ICourse) => {
-                return (
-                  <TableRow
-                    hover
-                    role="checkbox"
-                    tabIndex={-1}
-                    key={course._id}
-                  >
-                    {columns.map((column) => {
-                      let value;
-                      if (column.id === 'title') {
-                        value = (
-                          <Box
-                            sx={{
-                              display: 'flex',
-                              alignItems: 'center',
-                              gap: '5px',
-                            }}
-                          >
+              {courses &&
+                courses.map((course: ICourse) => {
+                  return (
+                    <TableRow
+                      hover
+                      role="checkbox"
+                      tabIndex={-1}
+                      key={course._id}
+                    >
+                      {columns.map((column) => {
+                        let value;
+                        if (column.id === 'title') {
+                          value = (
                             <Box
                               sx={{
-                                background: `url(${mainUrl}${course.icon}) center / cover no-repeat`,
-                                borderRadius: '50%',
-                                height: 32,
-                                width: 32,
-                                minWidth: 32,
-                                padding: 0,
-                              }}
-                            />
-                            <Typography
-                              sx={{
-                                textOverflow: 'ellipsis',
-                                overflow: 'hidden',
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: '5px',
                               }}
                             >
-                              {course.title}
+                              <Box
+                                sx={{
+                                  background: `url(${mainUrl}${course.icon}) center / cover no-repeat`,
+                                  borderRadius: '50%',
+                                  height: 32,
+                                  width: 32,
+                                  minWidth: 32,
+                                  padding: 0,
+                                }}
+                              />
+                              <Typography
+                                sx={{
+                                  textOverflow: 'ellipsis',
+                                  overflow: 'hidden',
+                                }}
+                              >
+                                {course.title}
+                              </Typography>
+                            </Box>
+                          );
+                        } else if (column.id === 'search') {
+                          value = (
+                            <Button
+                              onClick={() =>
+                                handleCourseClick('update', course)
+                              }
+                            >
+                              <SettingsSuggest />
+                            </Button>
+                          );
+                        } else {
+                          value = (
+                            <Typography>
+                              {column.id === 'createdAt' ||
+                              column.id === 'updatedAt'
+                                ? moment(
+                                    course[column.id as keyof typeof course]
+                                  ).fromNow()
+                                : course[column.id as keyof typeof course]}
                             </Typography>
-                          </Box>
-                        );
-                      } else if (column.id === 'search') {
-                        value = (
-                          <Button
-                            onClick={() => handleCourseClick('update', course)}
-                          >
-                            <SettingsSuggest />
-                          </Button>
-                        );
-                      } else {
-                        value = (
-                          <Typography>
-                            {column.id === 'createdAt' ||
-                            column.id === 'updatedAt'
-                              ? moment(
-                                  course[column.id as keyof typeof course]
-                                ).fromNow()
-                              : course[column.id as keyof typeof course]}
-                          </Typography>
-                        );
-                      }
+                          );
+                        }
 
-                      return (
-                        <TableCell
-                          key={column.id + 'column'}
-                          align={column.align}
-                        >
-                          {value}
-                        </TableCell>
-                      );
-                    })}
-                  </TableRow>
-                );
-              })}
+                        return (
+                          <TableCell
+                            key={column.id + 'column'}
+                            align={column.align}
+                          >
+                            {value}
+                          </TableCell>
+                        );
+                      })}
+                    </TableRow>
+                  );
+                })}
             </TableBody>
           )}
         </Table>
